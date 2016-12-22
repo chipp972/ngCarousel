@@ -1,0 +1,52 @@
+{
+  "name": "ngcarrousel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./bin/www",
+  "scripts": {
+    "prestart": "webpack -d --watch&",
+    "start": "nodemon ./bin/www",
+    "test": "bash tests/start.sh"
+  },
+  "author": "Nicolas Pierre-Charles <pierrecharles.nicolas@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chipp972/ngcarousel.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.6.1",
+    "eslint-config-standard": "^6.1.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "mocha": "^3.1.0",
+    "nodemon": "^1.10.0",
+    "sinon": "^1.17.5",
+    "babel-core": "6.4.5",
+    "babel-loader": "6.2.1",
+    "expose-loader": "0.7.1",
+    "webpack": "1.12.12"
+  },
+  "dependencies": {
+    "angular": "^1.6.0",
+    "angular-route": "^1.6.0",
+    "babel-polyfill": "6.3.14",
+    "babel-preset-es2015": "6.3.13",
+    "babel-register": "6.4.3",
+    "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "express-session": "^1.14.0",
+    "helmet": "^2.2.0",
+    "mongoose": "^4.6.1",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.0.0",
+    "password-generator": "^2.0.2",
+    "serve-favicon": "^2.3.0"
+  }
+}

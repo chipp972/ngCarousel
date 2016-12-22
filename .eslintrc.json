@@ -1,0 +1,18 @@
+{
+  "extends": "standard",
+  "plugins": [
+    "standard"
+  ],
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true,
+    "browser": true,
+    "jquery": true
+  },
+  "rules": {
+      "no-console": 0,
+      "no-cond-assign": 0,
+      "no-unused-vars": 1
+    },
+}
