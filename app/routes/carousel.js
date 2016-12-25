@@ -15,9 +15,10 @@ module.exports = function getCarouselRoutes (db) {
 
   router.route('/carousel/:id')
   .get((req, res, next) => {
-    db.Carousel.find({ _id: req.params['id'] }).populate('items._id').exec()
-    .then((carouselList) => {
-      return res.status(200).json(carouselList)
+    db.Carousel.findOne({ _id: req.params['id'] })
+    .populate('items._id').exec()
+    .then((carousel) => {
+      return res.status(200).json(carousel)
     })
     .catch(err => next(err))
   })

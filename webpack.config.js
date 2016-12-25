@@ -1,13 +1,15 @@
+const webpack = require('webpack')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const APP = __dirname
 
 module.exports = {
   context: APP,
   entry: {
-    app: './ngapp/app.js'
+    ngapp: './ngapp/app.js'
   },
   output: {
     path: './public',
-    filename: 'ngapp.js'
+    filename: '[name].js'
   },
   module: {
     loaders: [
@@ -15,7 +17,18 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
+        loader: 'file'
       }
     ]
-  }
+  },
+  plugins: [
+    new ExtractTextPlugin('style.css')
+  ]
 }

@@ -9,7 +9,6 @@ const getConfig = require('../config')
 mongoose.Promise = global.Promise
 
 // models
-const UserModel = require('./user')
 const ContentModel = require('./content')
 const CarouselModel = require('./carousel')
 
@@ -33,7 +32,6 @@ function getDatabaseConnection () {
 
         resolve({
           connection: mongoose.connection,
-          User: UserModel,
           Content: ContentModel,
           Carousel: CarouselModel
         })

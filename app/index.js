@@ -4,11 +4,9 @@ const path = require('path')
 const favicon = require('serve-favicon')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
-const helmet = require('helmet')
 
 const getRoutes = require('./routes')
 const getDatabaseConnection = require('./models')
-const configureAuthentication = require('./lib/auth')
 
 /**
  * Initialize the express application
@@ -23,9 +21,6 @@ function initApp () {
     .then((db) => {
       /* middlewares setup */
 
-      // security
-      app.use(helmet())
-
       // logs
       app.use(morgan('dev'))
 
@@ -36,9 +31,6 @@ function initApp () {
       // assets and angular app
       app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')))
       app.use(express.static(path.join(__dirname, '../public')))
-
-      // authentication
-      configureAuthentication(app, db)
 
       // database and app disconnection handlers
       db.connection.once('disconnected', () => {

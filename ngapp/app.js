@@ -2,22 +2,19 @@ import 'babel-polyfill'
 import angular from 'angular'
 import ngRoute from 'angular-route'
 
+// config
 import routing from './routes'
-import ngCarousel from './ng-carousel'
+
+// custom modules
+import Carousel from './components/carousel/carousel.module'
+import Sidebar from './components/sidebar/sidebar.module'
 
 const app = angular
 .module('app', [
   ngRoute,
-  ngCarousel.name
+  Carousel.name,
+  Sidebar.name
 ])
 .config(routing)
-
-angular.module('app')
-.component('app', {
-  template: `
-  <h1>haha</h1>
-  <carousel></carousel>
-  `
-})
 
 export default app

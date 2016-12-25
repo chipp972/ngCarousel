@@ -1,13 +1,22 @@
+
 export default ['$locationProvider', '$routeProvider',
   function routing ($locationProvider, $routeProvider) {
     $locationProvider.hashPrefix('!')
 
     $routeProvider
     .when('/', {
-      templateUrl: 'layout/home.html'
+      template: `
+        <sidebarblue title="Home"></sidebarblue>
+        <carouselslideshow index="0"></carouselslideshow>
+      `
     })
     .when('/admin', {
-      templateUrl: 'layout/admin.html'
+      template: `
+        <sidebarblue title="Admin"></sidebarblue>
+        <div class="w3-container">
+          <carouseladmin></carouseladmin>
+        </div>
+      `
     })
     .otherwise('/')
   }

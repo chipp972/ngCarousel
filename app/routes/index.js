@@ -10,7 +10,7 @@ const getCarouselRoutes = require('./carousel')
 module.exports = function getAllRoutes (db) {
   const router = express.Router()
 
-  router.use('/tst/', getCarouselRoutes(db))
+  router.use('/api/', getCarouselRoutes(db))
   router.use('/api/', getModelRoutes(db))
 
   // catch 404 and forward to error handler
