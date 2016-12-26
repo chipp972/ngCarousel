@@ -40264,7 +40264,7 @@
 	  $locationProvider.hashPrefix('!');
 	
 	  $routeProvider.when('/', {
-	    template: '\n        <sidebarblue title="Home"></sidebarblue>\n        <carouselslideshow index="0"></carouselslideshow>\n      '
+	    template: '\n        <sidebarblue title="Home"></sidebarblue>\n        <div class="w3-container">\n          <carouselslideshow index="0"></carouselslideshow>\n        </div>\n      '
 	  }).when('/admin', {
 	    template: '\n        <sidebarblue title="Admin"></sidebarblue>\n        <div class="w3-container">\n          <carouseladmin></carouseladmin>\n        </div>\n      '
 	  }).otherwise('/');
@@ -40334,7 +40334,7 @@
 	    bindings: {
 	      index: '@'
 	    },
-	    template: '\n      <h1 class="w3-center">{{$ctrl.carousel.name}}</h1>\n      <div\n        ng-repeat="item in $ctrl.carousel.items"\n        ng-hide="!$ctrl.isCurrentSlidePosition(item.position)"\n        class="slide w3-card w3-content">\n        <button ng-click="$ctrl.showModal(item)" class="w3-container">\n          <span>{{item._id.title}}</span>\n        </button>\n      </div>\n      <a class="w3-btn-floating w3-display-left" ng-click="$ctrl.carouselLeft()"><i class="material-icons">keyboard_arrow_left</i></a>\n      <a class="w3-btn-floating w3-display-right" ng-click="$ctrl.carouselRight()"><i class="material-icons">keyboard_arrow_right</i></a>\n\n      <carouselmodal></carouselmodal>\n      ',
+	    template: '\n      <h1 class="w3-center">{{$ctrl.carousel.name}}</h1>\n      <br />\n      <div class="w3-panel w3-display-container">\n        <div\n          ng-repeat="item in $ctrl.carousel.items"\n          ng-hide="!$ctrl.isCurrentSlidePosition(item.position)">\n          <div class="w3-card w3-padding-large w3-margin-large w3-display-bottommiddle" ng-click="$ctrl.showModal(item)">\n            <span>{{item._id.title}}</span>\n          </div>\n        </div>\n        <a class="w3-btn w3-display-left" ng-click="$ctrl.carouselLeft()"><i class="material-icons">keyboard_arrow_left</i></a>\n        <a class="w3-btn w3-display-right" ng-click="$ctrl.carouselRight()"><i class="material-icons">keyboard_arrow_right</i></a>\n        <ul class="w3-display-topmiddle w3-pagination">\n          <li ng-repeat="item in $ctrl.carousel.items">\n            <a\n              href=""\n              ng-click="$ctrl.setPosition(item.position)"\n              ng-class="$ctrl.setPaginationStyle(item.position)">\n              {{ item.position + 1 }}\n            </a>\n          </li>\n        </ul>\n      </div>\n      <carouselmodal></carouselmodal>\n      ',
 	
 	    controller: ['$http', '$scope', function CarouselSlideshowController($http, $scope) {
 	      this.currentPosition = 0;
@@ -40352,8 +40352,15 @@
 	      };
 	
 	      this.isCurrentSlidePosition = function (position) {
-	        if (position === this.currentPosition) return true;
-	        return false;
+	        return position === this.currentPosition;
+	      };
+	
+	      this.setPosition = function (position) {
+	        this.currentPosition = position;
+	      };
+	
+	      this.setPaginationStyle = function (position) {
+	        return { 'w3-black': position === this.currentPosition };
 	      };
 	
 	      this.carouselLeft = function () {
@@ -40438,7 +40445,7 @@
 	    bindings: {
 	      carousel: '<'
 	    },
-	    template: '\n      <carouselselect on-select="$ctrl.onSelect(carousel)"></carouselselect>\n      <div\n        ng-repeat="item in $ctrl.selectedCarousel.items"\n        class="w3-card">\n        <div class="w3-row">\n          <div class="w3-col m3 w3-center">\n            <button\n              class="w3-btn w3-khaki"\n              ng-click="$ctrl.upItem(item)">\n              <i class="material-icons">arrow_upward</i>\n            </button>\n            <button\n              class="w3-btn w3-khaki"\n              ng-click="$ctrl.downItem(item)">\n              <i class="material-icons">arrow_downward</i>\n            </button>\n          </div>\n          <div class="w3-col m2 w3-center">{{ item.position }}</div>\n          <div class="w3-col m4 w3-center">{{ item._id.reference }}</div>\n          <div class="w3-col m3 w3-center">\n            <button\n              class="w3-btn w3-teal"\n              ng-click="$ctrl.editItem(item)">\n              <i class="material-icons">edit</i>\n            </button>\n            <button\n              class="w3-btn w3-yellow"\n              ng-click="$ctrl.showModal(item)">\n              <i class="material-icons">visibility</i>\n            </button>\n            <button\n              class="w3-btn w3-red"\n              ng-click="$ctrl.deleteItem(item)">\n              <i class="material-icons">delete</i>\n            </button>\n          </div>\n        </div>\n      </div>\n      <button\n        class="w3-btn w3-green"\n        ng-show="$ctrl.selectedCarousel"\n        ng-click="$ctrl.addItem()">\n        Add an item\n      </button>\n      <button\n        class="w3-btn w3-indigo"\n        ng-click="$ctrl.addCarousel()">\n        Create a carousel\n      </button>\n      <carouselmodal></carouselmodal>\n      <p>{{ $ctrl.selectedCarousel }}</p>\n    ',
+	    template: '\n      <carouselselect on-select="$ctrl.onSelect(carousel)"></carouselselect>\n      <div\n        ng-repeat="item in $ctrl.selectedCarousel.items"\n        class="w3-card">\n        <div class="w3-row">\n          <div class="w3-col m3 w3-center">\n            <button\n              class="w3-btn w3-khaki"\n              ng-click="$ctrl.upItem(item)">\n              <i class="material-icons">arrow_upward</i>\n            </button>\n            <button\n              class="w3-btn w3-khaki"\n              ng-click="$ctrl.downItem(item)">\n              <i class="material-icons">arrow_downward</i>\n            </button>\n          </div>\n          <div class="w3-col m2 w3-center">{{ item.position }}</div>\n          <div class="w3-col m4 w3-center">{{ item._id.reference }}</div>\n          <div class="w3-col m3 w3-center">\n            <button\n              class="w3-btn w3-teal"\n              ng-click="$ctrl.showEditModal(item)">\n              <i class="material-icons">edit</i>\n            </button>\n            <button\n              class="w3-btn w3-yellow"\n              ng-click="$ctrl.showModal(item)">\n              <i class="material-icons">visibility</i>\n            </button>\n            <button\n              class="w3-btn w3-red"\n              ng-click="$ctrl.deleteItem(item)">\n              <i class="material-icons">delete</i>\n            </button>\n          </div>\n        </div>\n      </div>\n      <button\n        class="w3-btn w3-green"\n        ng-show="$ctrl.selectedCarousel"\n        ng-click="$ctrl.showEditModal()">\n        Add an item\n      </button>\n      <button\n        class="w3-btn w3-indigo"\n        ng-click="$ctrl.addCarousel()">\n        Create a carousel\n      </button>\n      <carouselmodal></carouselmodal>\n      <p>{{ $ctrl.selectedCarousel }}</p>\n    ',
 	    controller: ['$http', '$scope', function CarouselAdminController($http, $scope) {
 	      this.selectedCarousel = null;
 	      this.$onInit = function () {};
@@ -40451,7 +40458,24 @@
 	        $scope.$broadcast('showModal', content);
 	      };
 	
-	      this.addItem = function () {};
+	      this.showEditModal = function (content) {
+	        $scope.$broadcast('showEditModal', content);
+	      };
+	
+	      this.deleteItem = function () {
+	        var _this = this;
+	
+	        $http({
+	          method: 'DELETE',
+	          url: '/api/content/' + this.content._id._id
+	        }).then(function (response) {
+	          console.log(response);
+	          _this.modalStyle = { display: 'none' };
+	        }, function (errResponse) {
+	          $scope.$emit('error', errResponse);
+	          console.log(errResponse);
+	        });
+	      };
 	
 	      this.upItem = function (item) {
 	        var position1 = item.position - 1;
@@ -40489,21 +40513,62 @@
 	
 	exports.default = function (module) {
 	  module.component('carouselmodal', {
-	    template: '\n      <div ng-style="$ctrl.modalStyle" class="w3-modal">\n        <div class="w3-modal-content">\n          <div class="w3-container">\n            <span\n              ng-click="$ctrl.hideModal()"\n              class="w3-closebtn">&times;\n            </span>\n            <span>{{$ctrl.content._id.title}}</span>\n            <p>{{$ctrl.content._id.body}}</p>\n            <span>{{$ctrl.content._id.reference}}</span>\n          </div>\n        </div>\n      </div>\n    ',
-	    controller: function CarouselModalController($scope) {
+	    template: '\n      <div ng-style="$ctrl.modalStyle" class="w3-modal">\n        <div class="w3-modal-content">\n          <div class="w3-container">\n            <span\n              ng-click="$ctrl.hideModal()"\n              class="w3-closebtn">&times;\n            </span>\n            <div ng-show="$ctrl.edit">\n              <input\n                class="w3-input" ng-model="$ctrl.content._id.title"\n                type="text" placeholder="Title"\n                maxlength="50" required/>\n              <textarea\n                class="w3-input" ng-model="$ctrl.content._id.body" type="text"\n                placeholder="Body"\n                maxlength="750" rows="10">\n              </textarea>\n              <input class="w3-input" ng-model="$ctrl.content._id.reference" type="text"\n                placeholder="Reference"\n                minlength="10" maxlength="10" required/>\n              <br />\n              <button class="w3-btn w3-green" ng-click="$ctrl.save()">Save</button>\n              <button class="w3-btn w3-orange" ng-click="$ctrl.hideModal()">Cancel</button>\n            </div>\n            <div ng-show="!$ctrl.edit">\n              <span>{{$ctrl.content._id.title}}</span>\n              <p>{{$ctrl.content._id.body}}</p>\n              <span>{{$ctrl.content._id.reference}}</span>\n            </div>\n            <br />\n          </div>\n        </div>\n      </div>\n    ',
+	    controller: ['$http', '$scope', function CarouselModalController($http, $scope) {
 	      var self = this;
 	      this.modalStyle = { display: 'none' };
-	      this.content = {};
+	      this.content = { _id: {} };
+	      this.edit = false;
 	
 	      $scope.$on('showModal', function (event, content) {
 	        self.modalStyle = { display: 'block' };
 	        self.content = content;
+	        self.edit = false;
+	      });
+	
+	      $scope.$on('showEditModal', function (event, content) {
+	        self.modalStyle = { display: 'block' };
+	        if (content) {
+	          self.content = content;
+	        }
+	        self.edit = true;
 	      });
 	
 	      this.hideModal = function () {
 	        this.modalStyle = { display: 'none' };
 	      };
-	    }
+	
+	      this.save = function () {
+	        var _this = this;
+	
+	        if (this.content._id._id) {
+	          $http({
+	            method: 'PUT',
+	            url: '/api/content/' + this.content._id._id,
+	            data: this.content._id
+	          }).then(function (response) {
+	            console.log(response);
+	            _this.modalStyle = { display: 'none' };
+	          }, function (errResponse) {
+	            $scope.$emit('error', errResponse);
+	            console.log(errResponse);
+	          });
+	        } else {
+	          $http({
+	            method: 'POST',
+	            url: '/api/content',
+	            data: this.content._id
+	          }).then(function (response) {
+	            console.log(response);
+	            _this.modalStyle = { display: 'none' };
+	            // add the content to the current carousel
+	          }, function (errResponse) {
+	            $scope.$emit('error', errResponse);
+	            console.log(errResponse);
+	          });
+	        }
+	      };
+	    }]
 	  });
 	};
 

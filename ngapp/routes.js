@@ -7,7 +7,9 @@ export default ['$locationProvider', '$routeProvider',
     .when('/', {
       template: `
         <sidebarblue title="Home"></sidebarblue>
-        <carouselslideshow index="0"></carouselslideshow>
+        <div class="w3-container">
+          <carouselslideshow index="0"></carouselslideshow>
+        </div>
       `
     })
     .when('/admin', {

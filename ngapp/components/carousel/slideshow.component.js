@@ -8,17 +8,28 @@ export default function (module) {
     },
     template:`
       <h1 class="w3-center">{{$ctrl.carousel.name}}</h1>
-      <div
-        ng-repeat="item in $ctrl.carousel.items"
-        ng-hide="!$ctrl.isCurrentSlidePosition(item.position)"
-        class="slide w3-card w3-content">
-        <button ng-click="$ctrl.showModal(item)" class="w3-container">
-          <span>{{item._id.title}}</span>
-        </button>
+      <br />
+      <div class="w3-panel w3-display-container">
+        <div
+          ng-repeat="item in $ctrl.carousel.items"
+          ng-hide="!$ctrl.isCurrentSlidePosition(item.position)">
+          <div class="w3-card w3-padding-large w3-margin-large w3-display-bottommiddle" ng-click="$ctrl.showModal(item)">
+            <span>{{item._id.title}}</span>
+          </div>
+        </div>
+        <a class="w3-btn w3-display-left" ng-click="$ctrl.carouselLeft()"><i class="material-icons">keyboard_arrow_left</i></a>
+        <a class="w3-btn w3-display-right" ng-click="$ctrl.carouselRight()"><i class="material-icons">keyboard_arrow_right</i></a>
+        <ul class="w3-display-topmiddle w3-pagination">
+          <li ng-repeat="item in $ctrl.carousel.items">
+            <a
+              href=""
+              ng-click="$ctrl.setPosition(item.position)"
+              ng-class="$ctrl.setPaginationStyle(item.position)">
+              {{ item.position + 1 }}
+            </a>
+          </li>
+        </ul>
       </div>
-      <a class="w3-btn-floating w3-display-left" ng-click="$ctrl.carouselLeft()"><i class="material-icons">keyboard_arrow_left</i></a>
-      <a class="w3-btn-floating w3-display-right" ng-click="$ctrl.carouselRight()"><i class="material-icons">keyboard_arrow_right</i></a>
-
       <carouselmodal></carouselmodal>
       `
     ,
@@ -38,9 +49,15 @@ export default function (module) {
         }
 
         this.isCurrentSlidePosition = function (position) {
-          if (position === this.currentPosition)
-            return true
-          return false
+          return (position === this.currentPosition)
+        }
+
+        this.setPosition = function (position) {
+          this.currentPosition = position
+        }
+
+        this.setPaginationStyle = function (position) {
+          return { 'w3-black': position === this.currentPosition }
         }
 
         this.carouselLeft = function () {

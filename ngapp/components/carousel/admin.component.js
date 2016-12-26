@@ -26,7 +26,7 @@ export default function (module) {
           <div class="w3-col m3 w3-center">
             <button
               class="w3-btn w3-teal"
-              ng-click="$ctrl.editItem(item)">
+              ng-click="$ctrl.showEditModal(item)">
               <i class="material-icons">edit</i>
             </button>
             <button
@@ -45,7 +45,7 @@ export default function (module) {
       <button
         class="w3-btn w3-green"
         ng-show="$ctrl.selectedCarousel"
-        ng-click="$ctrl.addItem()">
+        ng-click="$ctrl.showEditModal()">
         Add an item
       </button>
       <button
@@ -69,8 +69,22 @@ export default function (module) {
           $scope.$broadcast('showModal', content)
         }
 
-        this.addItem = function () {
+        this.showEditModal = function (content) {
+          $scope.$broadcast('showEditModal', content)
+        }
 
+        this.deleteItem = function () {
+          $http({
+            method: `DELETE`,
+            url: `/api/content/${this.content._id._id}`
+          })
+          .then((response) => {
+            console.log(response)
+            this.modalStyle = { display: 'none' }
+          }, (errResponse) => {
+            $scope.$emit('error', errResponse)
+            console.log(errResponse)
+          })
         }
 
         this.upItem = function (item) {
