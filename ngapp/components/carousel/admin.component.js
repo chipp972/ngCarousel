@@ -45,6 +45,7 @@ export default function (module) {
       <button
         class="w3-btn w3-green"
         ng-show="$ctrl.selectedCarousel"
+        ng-disabled="$ctrl.selectedCarousel.items.length >= 10"
         ng-click="$ctrl.showEditModal()">
         Add an item
       </button>
@@ -53,12 +54,22 @@ export default function (module) {
         ng-click="$ctrl.addCarousel()">
         Create a carousel
       </button>
-      <carouselmodal></carouselmodal>
+      <carouselmodal
+        carousel="$ctrl.selectedCarousel"
+        show="$ctrl.showModalFlag"
+        edit="$ctrl.editModalFlag"
+        content="$ctrl.modalContent"
+        hide="$ctrl.hideModal()">
+      </carouselmodal>
       <p>{{ $ctrl.selectedCarousel }}</p>
     `,
-    controller: ['$http', '$scope',
-      function CarouselAdminController ($http, $scope) {
+    controller: ['$http',
+      function CarouselAdminController ($http) {
         this.selectedCarousel = null
+        this.showModalFlag = false
+        this.editModalFlag = false
+        this.modalContent = { _id: {} }
+
         this.$onInit = function () {}
 
         this.onSelect = function (carousel) {
@@ -66,17 +77,25 @@ export default function (module) {
         }
 
         this.showModal = function (content) {
-          $scope.$broadcast('showModal', content)
+          this.showModalFlag = true
+          this.modalContent = content
+          this.editModalFlag = false
         }
 
         this.showEditModal = function (content) {
-          $scope.$broadcast('showEditModal', content)
+          this.showModalFlag = true
+          this.modalContent = content
+          this.editModalFlag = true
         }
 
-        this.deleteItem = function () {
+        this.hideModal = function () {
+          this.showModalFlag = false
+        }
+
+        this.deleteItem = function (content) {
           $http({
             method: `DELETE`,
-            url: `/api/content/${this.content._id._id}`
+            url: `/api/content/${content._id._id}`
           })
           .then((response) => {
             console.log(response)

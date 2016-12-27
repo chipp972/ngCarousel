@@ -9,8 +9,8 @@ const getConfig = require('../config')
 mongoose.Promise = global.Promise
 
 // models
-const ContentModel = require('./content')
 const CarouselModel = require('./carousel')
+const ContentModel = require('./content')
 
 /**
  * Initialize the database connection and returns a database object

@@ -5,8 +5,9 @@ contents and the carousels.
 
 ## Todo ##
 
-[] Design of the carousel
+[] modify carousel data without reloading te page
 [] 1 component per button in the admin panel
-[] add content newly created to a carousel
 [] Move up/down content
+[] add a content already created to a carousel
 [] Show errors on modals
+[] Design of the carousel

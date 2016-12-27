@@ -1,8 +1,8 @@
 /**
  * The content to present inside the carousel
  */
-'use strict'
 const mongoose = require('mongoose')
+const CarouselModel = require('./carousel')
 
 const modelName = 'Content'
 
@@ -16,6 +16,28 @@ const ContentSchema = new mongoose.Schema({
     maxlength: 10,
     unique: true
   }
+})
+
+ContentSchema.post('remove', function (document, next) {
+  CarouselModel.find({}).exec()
+  .then((carouselList) => {
+    const promiseList = []
+    // delete the content from each carousel
+    carouselList.forEach((carousel) => {
+      let item = carousel.items.id(document._id)
+      if (item) {
+        carousel.items.id(document._id).remove()
+        .then(() => {
+          // then reorder the carousel
+          promiseList.push(carousel.reorder())
+        })
+        .catch((err) => next(err))
+      }
+    })
+    Promise.all(promiseList)
+    .then(() => next())
+    .catch((err) => next(err))
+  })
 })
 
 const ContentModel = mongoose.model(modelName, ContentSchema)

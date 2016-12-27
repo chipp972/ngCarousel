@@ -2,7 +2,6 @@ import angular from 'angular'
 
 export default function (module) {
   module.component('carouselslideshow', {
-    transclude: true,
     bindings: {
       index: '@'
     },
@@ -13,7 +12,7 @@ export default function (module) {
         <div
           ng-repeat="item in $ctrl.carousel.items"
           ng-hide="!$ctrl.isCurrentSlidePosition(item.position)">
-          <div class="w3-card w3-padding-large w3-margin-large w3-display-bottommiddle" ng-click="$ctrl.showModal(item)">
+          <div ng-style="{ cursor: 'pointer' }" class="w3-card w3-padding-large w3-margin-large w3-display-bottommiddle" ng-click="$ctrl.showModal(item)">
             <span>{{item._id.title}}</span>
           </div>
         </div>
@@ -30,13 +29,21 @@ export default function (module) {
           </li>
         </ul>
       </div>
-      <carouselmodal></carouselmodal>
+      <carouselmodal
+        carousel="$ctrl.carousel"
+        show="$ctrl.showModalFlag"
+        edit="false"
+        content="$ctrl.modalContent"
+        hide="$ctrl.hideModal()">
+      </carouselmodal>
       `
     ,
-    controller: ['$http', '$scope',
-      function CarouselSlideshowController ($http, $scope) {
+    controller: ['$http',
+      function CarouselSlideshowController ($http) {
         this.currentPosition = 0
         this.size = 0
+        this.showModalFlag = false
+        this.modalContent = { _id: {} }
 
         this.$onInit = function () {
           $http.get(`/api/carousel`)
@@ -75,7 +82,12 @@ export default function (module) {
         }
 
         this.showModal = function (content) {
-          $scope.$broadcast('showModal', content)
+          this.showModalFlag = true
+          this.modalContent = content
+        }
+
+        this.hideModal = function () {
+          this.showModalFlag = false
         }
       }
     ]

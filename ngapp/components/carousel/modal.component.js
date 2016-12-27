@@ -1,5 +1,15 @@
 export default function (module) {
   module.component('carouselmodal', {
+    bindings: {
+      show: '<',
+      edit: '<',
+      content: '<',
+      hide: '&',
+      carousel: '=',
+      addContent: '&',
+      editContent: '&',
+      deleteContent: '&'
+    },
     template: `
       <div ng-style="$ctrl.modalStyle" class="w3-modal">
         <div class="w3-modal-content">
@@ -35,27 +45,20 @@ export default function (module) {
         </div>
       </div>
     `,
-    controller: ['$http', '$scope',
-      function CarouselModalController ($http, $scope) {
+    controller: ['$http',
+      function CarouselModalController ($http) {
         const self = this
         this.modalStyle = { display: 'none' }
-        this.content = { _id: {} }
-        this.edit = false
 
-        $scope.$on('showModal', function (event, content) {
-          self.modalStyle = { display: 'block' }
-          self.content = content
-          self.edit = false
-        })
-
-        $scope.$on('showEditModal', function (event, content) {
-          self.modalStyle = { display: 'block' }
-          if (content) { self.content = content }
-          self.edit = true
-        })
+        this.$onChanges = function (changeObj) {
+          if (changeObj.show && this.show) {
+            this.modalStyle = { display: 'block' }
+          }
+        }
 
         this.hideModal = function () {
           this.modalStyle = { display: 'none' }
+          this.hide()
         }
 
         this.save = function () {
@@ -79,9 +82,25 @@ export default function (module) {
               data: this.content._id
             })
             .then((response) => {
-              console.log(response)
               this.modalStyle = { display: 'none' }
               // add the content to the current carousel
+              this.carousel.items.push({
+                _id: response.data._id,
+                position: this.carousel.items.length
+              })
+              $http({
+                method: `PATCH`,
+                url: `/api/carousel/${this.carousel._id}`,
+                data: {
+                  items: this.carousel.items
+                }
+              })
+              .then((response) => {
+                console.log(response)
+              }, (errResponse) => {
+                $scope.$emit('error', errResponse)
+                console.log(errResponse)
+              })
             }, (errResponse) => {
               $scope.$emit('error', errResponse)
               console.log(errResponse)
